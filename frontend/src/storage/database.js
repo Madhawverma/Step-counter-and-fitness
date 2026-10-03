@@ -1,39 +1,37 @@
 import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabaseSync('fitstep.db');
 
-export const initDB = () => {
-  db.execSync(`
-    CREATE TABLE IF NOT EXISTS daily_steps (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      date TEXT UNIQUE,
-      steps INTEGER DEFAULT 0,
-      distance REAL DEFAULT 0,
-      calories REAL DEFAULT 0,
-      activeMinutes INTEGER DEFAULT 0,
-      goal INTEGER DEFAULT 10000,
-      createdAt TEXT,
-      updatedAt TEXT
-    );
-    CREATE TABLE IF NOT EXISTS user_profile (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT,
-      age INTEGER,
-      height REAL,
-      weight REAL,
-      gender TEXT,
-      strideLength REAL,
-      createdAt TEXT,
-      updatedAt TEXT
-    );
-    CREATE TABLE IF NOT EXISTS goals (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      dailyStepsGoal INTEGER DEFAULT 10000,
-      weeklyStepsGoal INTEGER DEFAULT 70000,
-      weightGoal REAL,
-      updatedAt TEXT
-    );
-  `);
-};
+db.execSync(`
+  CREATE TABLE IF NOT EXISTS daily_steps (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT UNIQUE,
+    steps INTEGER DEFAULT 0,
+    distance REAL DEFAULT 0,
+    calories REAL DEFAULT 0,
+    activeMinutes INTEGER DEFAULT 0,
+    goal INTEGER DEFAULT 10000,
+    createdAt TEXT,
+    updatedAt TEXT
+  );
+  CREATE TABLE IF NOT EXISTS user_profile (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    age INTEGER,
+    height REAL,
+    weight REAL,
+    gender TEXT,
+    strideLength REAL,
+    createdAt TEXT,
+    updatedAt TEXT
+  );
+  CREATE TABLE IF NOT EXISTS goals (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    dailyStepsGoal INTEGER DEFAULT 10000,
+    weeklyStepsGoal INTEGER DEFAULT 70000,
+    weightGoal REAL,
+    updatedAt TEXT
+  );
+`);
 
 // Daily Steps
 export const getDailySteps = (date) => db.getFirstSync('SELECT * FROM daily_steps WHERE date = ?', [date]);

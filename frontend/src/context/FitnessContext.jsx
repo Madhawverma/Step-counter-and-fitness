@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { Pedometer } from 'expo-sensors';
-import { initDB, getDailySteps, saveDailySteps, getProfile, getGoals, saveProfile, saveGoals } from '../storage/database';
+import { getDailySteps, saveDailySteps, getProfile, getGoals, saveProfile, saveGoals } from '../storage/database';
 import { checkPedometerAvailability, requestPedometerPermission } from '../services/StepCounterService';
 import { calculateDistance } from '../utils/distanceCalculator';
 import { calculateCalories } from '../utils/calorieCalculator';
@@ -24,7 +24,6 @@ export const FitnessProvider = ({ children }) => {
   let pedometerSub = null;
 
   useEffect(() => {
-    initDB();
     loadUserData();
     setupSensor();
     return () => { if (pedometerSub) pedometerSub.remove(); };
