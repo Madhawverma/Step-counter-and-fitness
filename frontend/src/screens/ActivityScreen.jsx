@@ -30,10 +30,50 @@ export default function ActivityScreen({ navigation }) {
     red: '#ff4d4f'
   };
 
-  const progressPct = dailyGoal > 0 ? Math.min((steps / dailyGoal) * 100, 100) : 0;
-  const remaining = Math.max(dailyGoal - steps, 0);
+  let displaySteps = steps;
+  let displayDistance = distance;
+  let displayCalories = calories;
+  let displayActiveMinutes = activeMinutes;
   
-  const isGoalCompleted = steps >= dailyGoal && dailyGoal > 0;
+  if (filter === 'Yesterday') {
+    const yest = new Date();
+    yest.setDate(yest.getDate() - 1);
+    const dateKey = yest.toISOString().split('T')[0];
+    const rec = history.find(h => h.date === dateKey);
+    if (rec) {
+      displaySteps = rec.steps || 0;
+      displayDistance = rec.distance || 0;
+      displayCalories = rec.calories || 0;
+      displayActiveMinutes = rec.activeTime || 0;
+    } else {
+      displaySteps = 0; displayDistance = 0; displayCalories = 0; displayActiveMinutes = 0;
+    }
+  } else if (filter === 'This Week') {
+    let wSteps = 0, wDist = 0, wCal = 0, wTime = 0;
+    for(let i=0; i<7; i++) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dateKey = d.toISOString().split('T')[0];
+      const rec = history.find(h => h.date === dateKey);
+      if (rec) {
+        wSteps += (rec.steps || 0);
+        wDist += (rec.distance || 0);
+        wCal += (rec.calories || 0);
+        wTime += (rec.activeTime || 0);
+      }
+    }
+    const todayKey = new Date().toISOString().split('T')[0];
+    if (!history.find(h => h.date === todayKey)) {
+        wSteps += steps; wDist += distance; wCal += calories; wTime += activeMinutes;
+    }
+    displaySteps = wSteps; displayDistance = wDist; displayCalories = wCal; displayActiveMinutes = wTime;
+  } else if (filter === 'Custom') {
+    displaySteps = 0; displayDistance = 0; displayCalories = 0; displayActiveMinutes = 0;
+  }
+
+  const progressPct = dailyGoal > 0 ? Math.min((displaySteps / (filter === 'This Week' ? dailyGoal * 7 : dailyGoal)) * 100, 100) : 0;
+  const remaining = Math.max((filter === 'This Week' ? dailyGoal * 7 : dailyGoal) - displaySteps, 0);
+  const isGoalCompleted = displaySteps >= (filter === 'This Week' ? dailyGoal * 7 : dailyGoal) && dailyGoal > 0;
   let motivationTitle = isGoalCompleted ? "Goal Completed! 🎉" : (remaining < 2000 ? "Almost There! 🔥" : "Keep Going! 🎯");
   let motivationSub = isGoalCompleted ? "You crushed your daily goal!" : `You're ${remaining.toLocaleString()} steps away from your daily goal.`;
 
@@ -61,7 +101,6 @@ export default function ActivityScreen({ navigation }) {
         <Text style={styles.logoText}><Text style={{ color: theme.text }}>FIT</Text>STEP</Text>
         <View style={styles.avatar}><Ionicons name="person" size={20} color="#333" /></View>
       </View>
-        </View>
 
         {/* FILTER */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterScroll} contentContainerStyle={styles.filterContent}>
@@ -93,7 +132,7 @@ export default function ActivityScreen({ navigation }) {
           {/* TODAY'S ACTIVITY */}
           <View style={[styles.card, { backgroundColor: theme.card }]}>
             <View style={styles.cardHeader}>
-              <Text style={[styles.cardTitle, { color: theme.text }]}>Today's Activity</Text>
+              <Text style={[styles.cardTitle, { color: theme.text }]}>{filter === 'Today' ? 'Today\'s' : filter} Activity</Text>
               <View style={styles.walkingBadge}>
                 <MaterialCommunityIcons name="walk" size={16} color={theme.primary} />
                 <Text style={[styles.walkingText, { color: theme.text }]}>Walking <Ionicons name="chevron-forward" size={12}/></Text>
@@ -102,22 +141,22 @@ export default function ActivityScreen({ navigation }) {
             <View style={styles.statsGrid}>
               <View style={[styles.statBox, { backgroundColor: isDark ? '#112233' : '#f0fbfa' }]}>
                 <MaterialCommunityIcons name="shoe-print" size={24} color="#00bcd4" />
-                <Text style={[styles.statVal, { color: theme.text }]}>{steps}</Text>
+                <Text style={[styles.statVal, { color: theme.text }]}>{displaySteps}</Text>
                 <Text style={styles.statLabel}>Steps</Text>
               </View>
               <View style={[styles.statBox, { backgroundColor: isDark ? '#331a1a' : '#fff0eb' }]}>
                 <MaterialCommunityIcons name="fire" size={24} color="#ff5722" />
-                <Text style={[styles.statVal, { color: theme.text }]}>{Math.round(calories)}</Text>
+                <Text style={[styles.statVal, { color: theme.text }]}>{Math.round(displayCalories)}</Text>
                 <Text style={styles.statLabel}>Calories</Text>
               </View>
               <View style={[styles.statBox, { backgroundColor: isDark ? '#1a2233' : '#eef5ff' }]}>
                 <Ionicons name="location-sharp" size={24} color="#2196f3" />
-                <Text style={[styles.statVal, { color: theme.text }]}>{distance.toFixed(2)} <Text style={{fontSize: 12}}>km</Text></Text>
+                <Text style={[styles.statVal, { color: theme.text }]}>{displayDistance.toFixed(2)} <Text style={{fontSize: 12}}>km</Text></Text>
                 <Text style={styles.statLabel}>Distance</Text>
               </View>
               <View style={[styles.statBox, { backgroundColor: isDark ? '#221a33' : '#f5eeff' }]}>
                 <Ionicons name="time" size={24} color="#9c27b0" />
-                <Text style={[styles.statVal, { color: theme.text }]}>{Math.floor(activeMinutes/60)}h {activeMinutes%60}m</Text>
+                <Text style={[styles.statVal, { color: theme.text }]}>{Math.floor(displayActiveMinutes/60)}h {displayActiveMinutes%60}m</Text>
                 <Text style={styles.statLabel}>Active Time</Text>
               </View>
             </View>
@@ -133,7 +172,7 @@ export default function ActivityScreen({ navigation }) {
               <View style={[styles.progressFill, { width: `${progressPct}%` }]} />
             </View>
             <View style={styles.progressRow}>
-              <Text style={[styles.progressText, { color: theme.textSub }]}><Text style={{ color: theme.text, fontWeight: 'bold' }}>{steps.toLocaleString()}</Text> / {dailyGoal.toLocaleString()} steps</Text>
+              <Text style={[styles.progressText, { color: theme.textSub }]}><Text style={{ color: theme.text, fontWeight: 'bold' }}>{displaySteps.toLocaleString()}</Text> / {(filter === 'This Week' ? dailyGoal * 7 : dailyGoal).toLocaleString()} steps</Text>
               <Text style={[styles.progressText, { color: theme.textSub }]}>{remaining > 0 ? `${remaining.toLocaleString()} steps remaining` : 'Goal Achieved'}</Text>
             </View>
           </View>
