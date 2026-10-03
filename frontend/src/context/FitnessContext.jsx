@@ -111,6 +111,7 @@ export const FitnessProvider = ({ children }) => {
   };
   
   const updateProfile = (newProfile) => { saveProfile(newProfile); setUserProfile(newProfile); };
+  const updateGoals = (newGoals) => { saveGoals(newGoals); setDailyGoal(newGoals.dailyStepsGoal); };
   const clearTodayData = () => {
     setSteps(0);
     setDistance(0);

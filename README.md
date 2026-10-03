@@ -1,64 +1,65 @@
-# 🏃‍♂️ Step Counter & Fitness App
+# FitStep - Step Towards a Healthier You 🏃‍♂️💚
 
-A comprehensive React Native application designed to track your daily physical activity. This app seamlessly monitors your steps using phone sensors, calculates calories burned and distance covered, and provides historical data tracking to help you reach your fitness goals.
+FitStep is a premium, offline-first step counter and fitness tracking application built with React Native and Expo. It features a modern, dark-themed UI with neon green accents, smooth animations, and robust local data storage.
 
-## 🌟 Features
+## ✨ Features
 
-- **Real-Time Step Tracking:** Uses on-device sensors to accurately count steps in the background.
-- **Fitness Metrics:** Automatically calculates distance traveled and calories burned based on step count and user profile.
-- **Daily Goals:** Set, track, and achieve your daily step and activity goals.
-- **Activity History:** View past activity and daily stats saved securely on your device.
-- **Beautiful UI:** A smooth, responsive, and intuitive interface built with React Native.
+- **Real-time Step Tracking:** Leverages device pedometer sensors for accurate step counting.
+- **Premium UI/UX:** A stunning dark theme with vibrant neon green accents and glassmorphism elements.
+- **Interactive Animations:** Features a custom 4-state animated splash screen and smooth screen transitions.
+- **Offline First:** 100% of your data stays on your device using AsyncStorage (SQLite/Local). No internet required.
+- **Goal Management:** Set and track daily step, distance, and calorie goals.
+- **Historical Data:** View your past fitness data with beautifully rendered interactive charts.
+- **Privacy Focused:** No cloud sync, no tracking, complete data ownership.
 
-## 🏗 Architecture Flow
+## 📸 Screenshots
 
-The data flows from hardware sensors up to the user interface in a structured manner:
+*(Add screenshots of your Splash Screen, Home Screen, and Profile here)*
 
-```text
-Phone Sensors
-     ↓
-Step Counter Service
-     ↓
-Real Steps
-     ↓
-Fitness Calculation
- ┌───┼───────────────┐
- ↓   ↓               ↓
-Steps Distance    Calories
- └───┼───────────────┘
-     ↓
-Local Storage / SQLite
-     ↓
-History + Daily Stats
-     ↓
-React Native UI
+## 🚀 Tech Stack
+
+- **Framework:** React Native & Expo
+- **Navigation:** React Navigation (Stack & Bottom Tabs)
+- **State Management:** React Context API
+- **Storage:** React Native Async Storage
+- **Charts:** react-native-chart-kit
+- **Animations:** React Native Animated API & Lottie (optional)
+- **Icons:** Expo Vector Icons (Ionicons, MaterialCommunityIcons)
+
+## 🛠️ Installation & Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/FitStep.git
+   cd FitStep/frontend
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the application:**
+   ```bash
+   npx expo start
+   ```
+
+4. **Run on Device/Emulator:**
+   - Press `a` to run on an Android emulator.
+   - Press `i` to run on an iOS simulator.
+   - Or scan the QR code using the Expo Go app on your physical device.
+
+## 📦 Building the APK
+
+To generate a standalone Android APK, ensure you have an Expo dev account and run:
+```bash
+eas build -p android --profile preview
 ```
 
-### Local Device Data Flow (User's Phone)
+## 👨‍💻 Developer
 
-```text
-Phone Sensor
-     ↓
-React Native
-     ↓
-SQLite / Local Storage
-```
+**Developed by Madhaw Verma**
 
-## 📂 Project Structure
+## 📄 License
 
-```text
-src/
-├── components/    # Reusable UI components (Cards, Progress bars, etc.)
-├── screens/       # Application screens (Home, Activity, History, etc.)
-├── navigation/    # React Navigation configuration
-├── services/      # Background services and API integrations
-├── storage/       # Local database/SQLite logic
-├── hooks/         # Custom React Hooks
-├── utils/         # Helper functions (calculators, date formatting)
-├── constants/     # App-wide constants (colors, dimensions)
-└── context/       # React Context for state management
-```
-
-## 🚀 Getting Started
-
-_This project is currently in the initial setup phase. Installation and running instructions will be added once the initial logic is implemented._
+This project is licensed under the MIT License.
