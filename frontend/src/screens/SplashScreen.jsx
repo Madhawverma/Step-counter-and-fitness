@@ -3,48 +3,52 @@ import { View, Text, StyleSheet, Animated, Easing, Dimensions, Image } from 'rea
 import { FitnessContext } from '../context/FitnessContext';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import colors from '../constants/colors';
 
 const { width, height } = Dimensions.get('window');
 
 export default function SplashScreen({ navigation }) {
   const { userProfile, permissionStatus } = useContext(FitnessContext);
   
-  // Animation Values
+  // Base Opacity Values (Screen 1)
   const bgGlowAnim = useRef(new Animated.Value(0)).current;
   const logoScale = useRef(new Animated.Value(0.5)).current;
   const logoOpacity = useRef(new Animated.Value(0)).current;
+  const textOpacity = useRef(new Animated.Value(0)).current;
+  
+  // Circular Ring & Particles Values (Screen 2)
   const ringRotate = useRef(new Animated.Value(0)).current;
   const ringOpacity = useRef(new Animated.Value(0)).current;
+  const particlesOpacity = useRef(new Animated.Value(0)).current;
   
+  // Fitness Features Values (Screen 3)
   const iconFootOpacity = useRef(new Animated.Value(0)).current;
-  const iconFootTranslate = useRef(new Animated.Value(20)).current;
-  
+  const iconFootTranslate = useRef(new Animated.Value(15)).current;
   const iconFireOpacity = useRef(new Animated.Value(0)).current;
-  const iconFireTranslate = useRef(new Animated.Value(20)).current;
-  
+  const iconFireTranslate = useRef(new Animated.Value(15)).current;
   const iconHeartOpacity = useRef(new Animated.Value(0)).current;
-  const iconHeartTranslate = useRef(new Animated.Value(20)).current;
-  
+  const iconHeartTranslate = useRef(new Animated.Value(15)).current;
   const iconGraphOpacity = useRef(new Animated.Value(0)).current;
-  const iconGraphTranslate = useRef(new Animated.Value(20)).current;
+  const iconGraphTranslate = useRef(new Animated.Value(15)).current;
+  const motionTrailOpacity = useRef(new Animated.Value(0)).current;
 
-  const textOpacity = useRef(new Animated.Value(0)).current;
-  const textTranslate = useRef(new Animated.Value(20)).current;
-  
+  // Final Loading Values (Screen 4)
+  const loadingOpacity = useRef(new Animated.Value(0)).current;
   const loadingWidth = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // 0.0s - 0.5s: Initial fade in & scale
+    // State 1 (0s - 0.5s): Base Fade In (Logo + Text)
     Animated.parallel([
-      Animated.timing(bgGlowAnim, { toValue: 1, duration: 800, easing: Easing.out(Easing.ease), useNativeDriver: true }),
-      Animated.timing(logoOpacity, { toValue: 1, duration: 600, easing: Easing.out(Easing.ease), useNativeDriver: true }),
-      Animated.spring(logoScale, { toValue: 1, friction: 6, tension: 40, useNativeDriver: true })
+      Animated.timing(bgGlowAnim, { toValue: 1, duration: 500, easing: Easing.out(Easing.ease), useNativeDriver: true }),
+      Animated.timing(logoOpacity, { toValue: 1, duration: 500, easing: Easing.out(Easing.ease), useNativeDriver: true }),
+      Animated.spring(logoScale, { toValue: 1, friction: 6, tension: 40, useNativeDriver: true }),
+      Animated.timing(textOpacity, { toValue: 1, duration: 500, easing: Easing.out(Easing.ease), useNativeDriver: true }),
     ]).start();
 
-    // 0.5s - 2.0s: Ring rotation and appear
+    // State 2 (0.5s - 2.0s): Circular Animation + Particles
     setTimeout(() => {
       Animated.timing(ringOpacity, { toValue: 1, duration: 400, useNativeDriver: true }).start();
+      Animated.timing(particlesOpacity, { toValue: 1, duration: 500, useNativeDriver: true }).start();
+      
       Animated.loop(
         Animated.timing(ringRotate, {
           toValue: 1,
@@ -55,37 +59,37 @@ export default function SplashScreen({ navigation }) {
       ).start();
     }, 500);
 
-    // 2.0s - 3.0s: Staggered icons
+    // State 3 (2.0s - 3.0s): Features Glimpse
     setTimeout(() => {
       const createIconAnim = (opac, trans) => Animated.parallel([
-        Animated.timing(opac, { toValue: 1, duration: 400, useNativeDriver: true }),
+        Animated.timing(opac, { toValue: 1, duration: 300, useNativeDriver: true }),
         Animated.spring(trans, { toValue: 0, friction: 5, useNativeDriver: true })
       ]);
       
-      Animated.stagger(200, [
-        createIconAnim(iconFootOpacity, iconFootTranslate),
-        createIconAnim(iconFireOpacity, iconFireTranslate),
-        createIconAnim(iconHeartOpacity, iconHeartTranslate),
-        createIconAnim(iconGraphOpacity, iconGraphTranslate),
-      ]).start();
-    }, 1500);
-
-    // 3.0s - 4.0s: Text and Loading bar
-    setTimeout(() => {
       Animated.parallel([
-        Animated.timing(textOpacity, { toValue: 1, duration: 500, useNativeDriver: true }),
-        Animated.spring(textTranslate, { toValue: 0, friction: 5, useNativeDriver: true }),
+        Animated.timing(motionTrailOpacity, { toValue: 1, duration: 500, useNativeDriver: true }),
+        Animated.stagger(150, [
+          createIconAnim(iconFootOpacity, iconFootTranslate),
+          createIconAnim(iconFireOpacity, iconFireTranslate),
+          createIconAnim(iconHeartOpacity, iconHeartTranslate),
+          createIconAnim(iconGraphOpacity, iconGraphTranslate),
+        ])
       ]).start();
+    }, 2000);
+
+    // State 4 (3.0s - 4.0s): Final Loading
+    setTimeout(() => {
+      Animated.timing(loadingOpacity, { toValue: 1, duration: 400, useNativeDriver: true }).start();
       
       Animated.timing(loadingWidth, {
         toValue: 1,
-        duration: 1200,
+        duration: 1000,
         easing: Easing.out(Easing.cubic),
-        useNativeDriver: false // width doesn't support native driver easily without scaleX
+        useNativeDriver: false
       }).start();
-    }, 2500);
+    }, 3000);
 
-    // End of Splash -> Navigation
+    // Transition out
     const timer = setTimeout(() => {
       if (!userProfile) {
         navigation.replace('Onboarding');
@@ -126,28 +130,40 @@ export default function SplashScreen({ navigation }) {
       </Animated.View>
 
       <View style={styles.centerStage}>
-        {/* Animated Ring */}
+        {/* Animated Ring (State 2) */}
         <Animated.View style={[styles.ringContainer, { opacity: ringOpacity, transform: [{ rotate: rotateInterpolate }] }]}>
            <View style={styles.ringOuter} />
            <View style={styles.ringInner} />
            <View style={styles.ringDot} />
         </Animated.View>
+        
+        {/* Particles (State 2) */}
+        <Animated.View style={[StyleSheet.absoluteFill, { opacity: particlesOpacity, justifyContent: 'center', alignItems: 'center' }]}>
+           <View style={[styles.particle, { top: -80, left: 20 }]} />
+           <View style={[styles.particle, { top: -50, left: -60, width: 4, height: 4 }]} />
+           <View style={[styles.particle, { bottom: -70, right: 10 }]} />
+           <View style={[styles.particle, { bottom: 20, right: -80, width: 6, height: 6 }]} />
+           <View style={[styles.particle, { bottom: -40, left: -40, width: 3, height: 3 }]} />
+        </Animated.View>
 
-        {/* Small Icons */}
-        <Animated.View style={[styles.floatingIcon, { top: -40, left: -40, opacity: iconFootOpacity, transform: [{ translateY: iconFootTranslate }] }]}>
+        {/* Motion Trail (State 3) */}
+        <Animated.View style={[styles.motionTrail, { opacity: motionTrailOpacity }]} />
+
+        {/* Small Icons (State 3) */}
+        <Animated.View style={[styles.floatingIcon, { top: -50, left: -50, opacity: iconFootOpacity, transform: [{ translateY: iconFootTranslate }] }]}>
           <MaterialCommunityIcons name="shoe-print" size={24} color="#00ff88" />
         </Animated.View>
-        <Animated.View style={[styles.floatingIcon, { top: -20, right: -40, opacity: iconFireOpacity, transform: [{ translateY: iconFireTranslate }] }]}>
+        <Animated.View style={[styles.floatingIcon, { top: -30, right: -50, opacity: iconFireOpacity, transform: [{ translateY: iconFireTranslate }] }]}>
           <MaterialCommunityIcons name="fire" size={24} color="#00ff88" />
         </Animated.View>
-        <Animated.View style={[styles.floatingIcon, { bottom: 0, right: -50, opacity: iconHeartOpacity, transform: [{ translateY: iconHeartTranslate }] }]}>
+        <Animated.View style={[styles.floatingIcon, { bottom: -10, right: -60, opacity: iconHeartOpacity, transform: [{ translateY: iconHeartTranslate }] }]}>
           <MaterialCommunityIcons name="heart-pulse" size={24} color="#00ff88" />
         </Animated.View>
-        <Animated.View style={[styles.floatingIcon, { bottom: -30, left: 30, opacity: iconGraphOpacity, transform: [{ translateY: iconGraphTranslate }] }]}>
+        <Animated.View style={[styles.floatingIcon, { bottom: -40, left: 30, opacity: iconGraphOpacity, transform: [{ translateY: iconGraphTranslate }] }]}>
           <MaterialCommunityIcons name="chart-bar" size={24} color="#00ff88" />
         </Animated.View>
 
-        {/* Central Logo */}
+        {/* Central Logo (State 1) */}
         <Animated.View style={{ opacity: logoOpacity, transform: [{ scale: logoScale }] }}>
           <View style={styles.logoWrapper}>
             <Image 
@@ -159,18 +175,22 @@ export default function SplashScreen({ navigation }) {
         </Animated.View>
       </View>
 
-      {/* Text and Loader */}
-      <Animated.View style={[styles.bottomSection, { opacity: textOpacity, transform: [{ translateY: textTranslate }] }]}>
+      {/* Main Text Section (State 1) */}
+      <Animated.View style={[styles.bottomSection, { opacity: textOpacity }]}>
         <View style={styles.titleContainer}>
           <Text style={styles.titleWhite}>Fit</Text>
           <Text style={styles.titleGreen}>Step</Text>
         </View>
-        <Text style={styles.tagline}>STEP TOWARDS A HEALTHIER YOU</Text>
+        <Text style={styles.tagline}>STEP TOWARDS</Text>
+        <Text style={styles.tagline}>A HEALTHIER YOU</Text>
         
-        <View style={styles.loadingContainer}>
-          <Animated.View style={[styles.loadingBar, { width: loadingBarWidth }]} />
-        </View>
-        <Text style={styles.loadingText}>Getting you ready...</Text>
+        {/* Loading Bar Section (State 4) */}
+        <Animated.View style={{ opacity: loadingOpacity, alignItems: 'center', width: '100%', marginTop: 30 }}>
+          <View style={styles.loadingContainer}>
+            <Animated.View style={[styles.loadingBar, { width: loadingBarWidth }]} />
+          </View>
+          <Text style={styles.loadingText}>Getting you ready...</Text>
+        </Animated.View>
       </Animated.View>
     </View>
   );
@@ -188,7 +208,7 @@ const styles = StyleSheet.create({
     height: 200,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -50
+    marginTop: -80 // Moved up slightly to balance layout
   },
   logoWrapper: {
     width: 130,
@@ -206,84 +226,108 @@ const styles = StyleSheet.create({
   },
   ringContainer: {
     position: 'absolute',
-    width: 200,
-    height: 200,
+    width: 220,
+    height: 220,
     justifyContent: 'center',
     alignItems: 'center'
   },
   ringOuter: {
     position: 'absolute',
-    width: 190,
-    height: 190,
-    borderRadius: 95,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 255, 136, 0.2)',
+    width: 210,
+    height: 210,
+    borderRadius: 105,
+    borderWidth: 1.5,
+    borderColor: 'rgba(0, 255, 136, 0.1)',
     borderTopColor: '#00ff88',
+    borderRightColor: '#00ff88',
   },
   ringInner: {
     position: 'absolute',
-    width: 160,
-    height: 160,
-    borderRadius: 80,
+    width: 170,
+    height: 170,
+    borderRadius: 85,
     borderWidth: 2,
-    borderColor: 'rgba(0, 255, 136, 0.1)',
+    borderColor: 'rgba(0, 255, 136, 0.05)',
     borderBottomColor: '#00ff88',
   },
   ringDot: {
     position: 'absolute',
     top: 5,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
     backgroundColor: '#00ff88',
     shadowColor: '#00ff88',
     shadowOpacity: 1,
-    shadowRadius: 10,
+    shadowRadius: 15,
     shadowOffset: { width: 0, height: 0 },
     elevation: 10
   },
+  particle: {
+    position: 'absolute',
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
+    backgroundColor: '#00ff88',
+    shadowColor: '#00ff88',
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+  },
+  motionTrail: {
+    position: 'absolute',
+    left: -60,
+    width: 120,
+    height: 60,
+    borderBottomLeftRadius: 60,
+    borderTopLeftRadius: 60,
+    backgroundColor: 'rgba(0, 255, 136, 0.1)',
+    transform: [{ skewY: '-20deg' }],
+  },
   floatingIcon: {
     position: 'absolute',
-    backgroundColor: 'rgba(0, 255, 136, 0.1)',
-    padding: 8,
-    borderRadius: 12,
+    backgroundColor: 'rgba(0, 255, 136, 0.08)',
+    padding: 10,
+    borderRadius: 14,
     borderWidth: 1,
-    borderColor: 'rgba(0, 255, 136, 0.2)'
+    borderColor: 'rgba(0, 255, 136, 0.25)',
+    zIndex: 5
   },
   bottomSection: {
     position: 'absolute',
-    bottom: 60,
+    bottom: 80,
     alignItems: 'center',
     width: '100%'
   },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8
+    marginBottom: 12
   },
   titleWhite: {
-    fontSize: 42,
+    fontSize: 46,
     fontWeight: '900',
-    color: '#FFFFFF'
+    color: '#FFFFFF',
+    letterSpacing: -1
   },
   titleGreen: {
-    fontSize: 42,
+    fontSize: 46,
     fontWeight: '900',
-    color: '#00ff88'
+    color: '#00ff88',
+    letterSpacing: -1
   },
   tagline: {
-    fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.6)',
-    letterSpacing: 2,
-    marginBottom: 40
+    fontSize: 14,
+    color: 'rgba(255, 255, 255, 0.7)',
+    letterSpacing: 3,
+    marginBottom: 4
   },
   loadingContainer: {
-    width: 200,
+    width: 220,
     height: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
     borderRadius: 2,
     overflow: 'hidden',
-    marginBottom: 12
+    marginBottom: 16
   },
   loadingBar: {
     height: '100%',
@@ -291,7 +335,7 @@ const styles = StyleSheet.create({
     borderRadius: 2
   },
   loadingText: {
-    fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.4)'
+    fontSize: 13,
+    color: 'rgba(255, 255, 255, 0.5)'
   }
 });
