@@ -86,7 +86,9 @@ export default function HomeScreen({ navigation }) {
             <View style={styles.topBar}>
               <Text style={styles.logoText}><Text style={styles.logoWhite}>FIT</Text>STEP</Text>
               <View style={styles.topRight}>
-                <View style={styles.avatar}><Ionicons name="person" size={20} color="#333" /></View>
+                <TouchableOpacity style={styles.avatar} onPress={() => navigation.navigate('Profile')}>
+                  <Ionicons name="person" size={20} color="#333" />
+                </TouchableOpacity>
               </View>
             </View>
 

@@ -89,8 +89,6 @@ export default function SplashScreen({ navigation }) {
     const timer = setTimeout(() => {
       if (!userProfile) {
         navigation.replace('Onboarding');
-      } else if (permissionStatus !== 'granted') {
-        navigation.replace('Permission');
       } else {
         navigation.replace('Main');
       }
