@@ -1,0 +1,1 @@
+export const syncData = async (data) => { console.log("Mock sync to backend", data); return true; };

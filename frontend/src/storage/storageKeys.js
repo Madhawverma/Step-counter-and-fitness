@@ -1,0 +1,1 @@
+export default { IS_FIRST_LAUNCH: '@is_first_launch', THEME: '@theme' };

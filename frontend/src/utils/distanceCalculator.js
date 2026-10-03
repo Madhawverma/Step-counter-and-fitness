@@ -1,4 +1,3 @@
-export const calculateDistance = (steps, strideLengthMeters = 0.76) => {
-  const distanceMeters = steps * strideLengthMeters;
-  return distanceMeters / 1000;
+export const calculateDistance = (steps, strideLengthM = 0.76) => {
+  return (steps * strideLengthM) / 1000;
 };
