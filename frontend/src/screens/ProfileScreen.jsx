@@ -98,7 +98,6 @@ export default function ProfileScreen({ navigation }) {
               </View>
             </View>
           </View>
-          </View>
 
           {/* TOP USER CARD */}
           <View style={[styles.topCard, { backgroundColor: theme.topCardBg }]}>
