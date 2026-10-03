@@ -92,22 +92,12 @@ export default function ProfileScreen({ navigation }) {
           {/* HEADER */}
           <View style={styles.header}>
             <Text style={styles.logoText}><Text style={{ color: theme.text }}>FIT</Text>STEP</Text>
-            <TouchableOpacity><Ionicons name="settings-outline" size={24} color={theme.text} /></TouchableOpacity>
-          </View>
-          
-          <View style={styles.titleRow}>
-            <View style={{ flex: 1 }}>
-              <Text style={[styles.title, { color: theme.text }]}>Profile</Text>
-              <Text style={[styles.subtitle, { color: theme.textSub }]}>Manage your personal information and fitness settings</Text>
-            </View>
             <View style={styles.avatarContainer}>
-              <View style={[styles.avatar, { backgroundColor: theme.primary }]}>
-                <Text style={styles.avatarText}>{renderInitials()}</Text>
-              </View>
-              <View style={[styles.cameraBadge, { borderColor: theme.bg }]}>
-                <Ionicons name="camera" size={12} color="#FFF" />
+              <View style={[styles.avatar, { backgroundColor: theme.primary, width: 32, height: 32, borderRadius: 16 }]}>
+                <Text style={{fontSize: 12, fontWeight: 'bold', color: '#FFF'}}>{renderInitials()}</Text>
               </View>
             </View>
+          </View>
           </View>
 
           {/* TOP USER CARD */}

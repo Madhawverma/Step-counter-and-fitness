@@ -58,25 +58,9 @@ export default function ActivityScreen({ navigation }) {
         
         {/* HEADER */}
         <View style={styles.header}>
-          <View style={styles.headerTop}>
-            <Text style={styles.logoText}><Text style={{ color: theme.text }}>FIT</Text>STEP</Text>
-            <View style={styles.avatar}><Ionicons name="person" size={20} color="#333" /></View>
-          </View>
-          <View style={styles.headerTitleRow}>
-            <View>
-              <Text style={[styles.title, { color: theme.text }]}>Activity</Text>
-              <Text style={styles.subtitle}>Track your daily movement</Text>
-            </View>
-            <View style={styles.headerRight}>
-              <View style={[styles.dateBtn, { backgroundColor: theme.pillBg, borderColor: theme.border }]}>
-                <Ionicons name="calendar-outline" size={16} color={theme.text} />
-                <Text style={[styles.dateBtnText, { color: theme.text }]}>Today</Text>
-              </View>
-              <TouchableOpacity style={[styles.iconBtn, { backgroundColor: theme.pillBg, borderColor: theme.border }]}>
-                <MaterialCommunityIcons name="line-scan" size={20} color={theme.text} />
-              </TouchableOpacity>
-            </View>
-          </View>
+        <Text style={styles.logoText}><Text style={{ color: theme.text }}>FIT</Text>STEP</Text>
+        <View style={styles.avatar}><Ionicons name="person" size={20} color="#333" /></View>
+      </View>
         </View>
 
         {/* FILTER */}
@@ -218,7 +202,7 @@ export default function ActivityScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1 },
-  header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 20 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 10, paddingBottom: 15 },
   headerTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
   logoText: { fontSize: 20, fontWeight: '900', color: '#00d27f', fontStyle: 'italic' },
   avatar: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#DDD', justifyContent: 'center', alignItems: 'center' },

@@ -232,7 +232,7 @@ export default function HistoryScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1 },
-  header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 15 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 10, paddingBottom: 15 },
   headerTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 },
   logoText: { fontSize: 20, fontWeight: '900', color: '#00d27f', fontStyle: 'italic' },
   headerTopRight: { flexDirection: 'row', alignItems: 'center' },

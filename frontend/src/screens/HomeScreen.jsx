@@ -49,15 +49,8 @@ export default function HomeScreen({ navigation }) {
             <View style={styles.topBar}>
               <Text style={styles.logoText}><Text style={styles.logoWhite}>FIT</Text>STEP</Text>
               <View style={styles.topRight}>
-                <TouchableOpacity style={styles.iconBtn}><Ionicons name="sunny" size={24} color="#FFF" /></TouchableOpacity>
                 <View style={styles.avatar}><Ionicons name="person" size={20} color="#333" /></View>
               </View>
-            </View>
-
-            {/* Greeting */}
-            <View style={styles.greetingCont}>
-              <Text style={styles.greetingTitle}>Good Morning, {name} 👋</Text>
-              <Text style={styles.greetingDate}>{dateStr}</Text>
             </View>
 
             {/* Circular Dial */}
@@ -74,12 +67,21 @@ export default function HomeScreen({ navigation }) {
             </View>
       
       {/* Goal Edit Modal */}
+      
+  
+    
+      {/* Edit Goal Button */}
+      <TouchableOpacity onPress={openGoalModal} style={{alignSelf: 'center', flexDirection: 'row', alignItems: 'center', backgroundColor: colors.primary, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, marginTop: -20, zIndex: 10, elevation: 5}}>
+        <Ionicons name="pencil" size={14} color="#FFF" style={{marginRight:4}} />
+        <Text style={{color:"#FFF", fontSize: 12, fontWeight: "bold"}}>EDIT DAILY GOAL</Text>
+      </TouchableOpacity>
+
       <Modal visible={goalModalVisible} transparent animationType="fade">
         <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center'}}>
-          <View style={{width: '80%', padding: 20, borderRadius: 20, backgroundColor: theme.card}}>
-            <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom: 15, color: theme.text}}>Edit Daily Goal</Text>
+          <View style={{width: '80%', padding: 20, borderRadius: 20, backgroundColor: '#FFF'}}>
+            <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom: 15, color: '#000'}}>Edit Daily Goal</Text>
             <TextInput
-              style={{height: 50, borderRadius: 12, paddingHorizontal: 15, fontSize: 16, marginBottom: 20, backgroundColor: theme.bg, color: theme.text}}
+              style={{height: 50, borderRadius: 12, paddingHorizontal: 15, fontSize: 16, marginBottom: 20, backgroundColor: '#f0f0f0', color: '#000'}}
               value={tempGoal}
               onChangeText={setTempGoal}
               keyboardType="numeric"
@@ -88,7 +90,7 @@ export default function HomeScreen({ navigation }) {
               <TouchableOpacity style={{padding: 10, marginRight: 10}} onPress={() => setGoalModalVisible(false)}>
                 <Text style={{color: '#888'}}>Cancel</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={{paddingHorizontal: 20, paddingVertical: 10, borderRadius: 12, backgroundColor: theme.primary}} onPress={saveGoal}>
+              <TouchableOpacity style={{paddingHorizontal: 20, paddingVertical: 10, borderRadius: 12, backgroundColor: colors.primary}} onPress={saveGoal}>
                 <Text style={{color: '#FFF', fontWeight: 'bold'}}>Save</Text>
               </TouchableOpacity>
             </View>
@@ -236,7 +238,7 @@ const styles = StyleSheet.create({
   dialContainer: { alignItems: 'center', marginTop: 20 },
   dialOuter: { width: 220, height: 220, borderRadius: 110, backgroundColor: 'rgba(255,255,255,0.1)', justifyContent: 'center', alignItems: 'center', borderWidth: 8, borderColor: 'rgba(255,255,255,0.2)' },
   dialInner: { width: 190, height: 190, borderRadius: 95, backgroundColor: '#213345', justifyContent: 'center', alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.5, shadowRadius: 10 },
-  dialSteps: { fontSize: 48, fontWeight: 'bold', color: '#FFF', marginTop: -5 },
+  dialSteps: { fontSize: 36, fontWeight: 'bold', color: '#FFF', marginTop: -5 },
   dialLabel: { fontSize: 14, color: '#AAA', letterSpacing: 1 },
   dialGoal: { fontSize: 14, color: '#AAA', marginTop: 5 },
   dialPill: { backgroundColor: colors.primary, paddingHorizontal: 12, paddingVertical: 4, borderRadius: 15, marginTop: 10 },

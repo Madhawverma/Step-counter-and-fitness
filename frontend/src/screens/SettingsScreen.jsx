@@ -73,9 +73,6 @@ export default function SettingsScreen({ navigation }) {
           <View style={styles.avatar}><Ionicons name="person" size={20} color="#333" /></View>
         </View>
 
-        <Text style={[styles.title, { color: theme.text }]}>Settings</Text>
-        <Text style={[styles.subtitle, { color: theme.textSub }]}>Customize your fitness experience</Text>
-
         {/* PREF CARD */}
         <View style={[styles.prefCard, { backgroundColor: isDark ? '#0d222b' : '#eef5ff' }]}>
           <View style={[styles.prefIcon, { backgroundColor: isDark ? '#00d27f' : '#0d6efd' }]}>
