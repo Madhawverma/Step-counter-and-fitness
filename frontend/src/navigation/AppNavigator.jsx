@@ -1,11 +1,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeScreen from '../screens/HomeScreen';
 import ActivityScreen from '../screens/ActivityScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import GoalsScreen from '../screens/GoalsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import SettingsScreen from '../screens/SettingsScreen';
 import colors from '../constants/colors';
 
 const Tab = createBottomTabNavigator();
@@ -13,19 +13,25 @@ const Tab = createBottomTabNavigator();
 export default function AppNavigator() {
   return (
     <Tab.Navigator 
-      screenOptions={{ 
-        headerShown: false, 
+      screenOptions={({ route }) => ({
+        headerShown: false,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textSecondary,
-        tabBarStyle: { backgroundColor: colors.card, borderTopWidth: 0, elevation: 10 }
-      }}
+        tabBarStyle: { backgroundColor: '#1e293b', borderTopWidth: 0, height: 70, paddingBottom: 15, paddingTop: 10 },
+        tabBarIcon: ({ color, size }) => {
+          if (route.name === 'Home') return <Ionicons name="home" size={24} color={color} />;
+          if (route.name === 'Activity') return <MaterialCommunityIcons name="shoe-print" size={24} color={color} />;
+          if (route.name === 'History') return <Ionicons name="bar-chart" size={24} color={color} />;
+          if (route.name === 'Goals') return <MaterialCommunityIcons name="target" size={24} color={color} />;
+          if (route.name === 'Profile') return <Ionicons name="person" size={24} color={color} />;
+        }
+      })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarLabel: 'Home' }} />
-      <Tab.Screen name="Activity" component={ActivityScreen} options={{ tabBarLabel: 'Activity' }} />
-      <Tab.Screen name="History" component={HistoryScreen} options={{ tabBarLabel: 'History' }} />
-      <Tab.Screen name="Goals" component={GoalsScreen} options={{ tabBarLabel: 'Goals' }} />
-      <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: 'Profile' }} />
-      <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: 'Settings' }} />
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Activity" component={ActivityScreen} />
+      <Tab.Screen name="History" component={HistoryScreen} />
+      <Tab.Screen name="Goals" component={GoalsScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 }
