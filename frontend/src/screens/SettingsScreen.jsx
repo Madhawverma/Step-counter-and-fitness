@@ -7,7 +7,7 @@ import { clearAllHistory } from '../storage/database';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SettingsScreen({ navigation }) {
-  const { dailyGoal, updateGoals, isTracking, setDailySteps, setDistance, setCalories, setActiveMinutes } = useContext(FitnessContext);
+  const { dailyGoal, updateGoals, isTracking, clearTodayData } = useContext(FitnessContext);
   
   // Basic theme tracking (in a real app, this needs a global context or App.jsx wrapper, but we use Appearance here)
   const systemTheme = useColorScheme();

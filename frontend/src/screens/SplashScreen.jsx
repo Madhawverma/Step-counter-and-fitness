@@ -149,11 +149,13 @@ export default function SplashScreen({ navigation }) {
 
         {/* Central Logo */}
         <Animated.View style={{ opacity: logoOpacity, transform: [{ scale: logoScale }] }}>
-          <Image 
-            source={require('../../assets/icon.png')} 
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
+          <View style={styles.logoWrapper}>
+            <Image 
+              source={require('../../assets/icon.png')} 
+              style={styles.logoImage}
+              resizeMode="cover"
+            />
+          </View>
         </Animated.View>
       </View>
 
@@ -188,9 +190,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: -50
   },
-  logoImage: {
+  logoWrapper: {
     width: 130,
     height: 130,
+    borderRadius: 65,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#040b16'
+  },
+  logoImage: {
+    width: '100%',
+    height: '100%',
     zIndex: 10
   },
   ringContainer: {

@@ -111,10 +111,24 @@ export const FitnessProvider = ({ children }) => {
   };
   
   const updateProfile = (newProfile) => { saveProfile(newProfile); setUserProfile(newProfile); };
-  const updateGoals = (newGoals) => { saveGoals(newGoals); setDailyGoal(newGoals.dailyStepsGoal); };
+  const clearTodayData = () => {
+    setSteps(0);
+    setDistance(0);
+    setCalories(0);
+    setActiveMinutes(0);
+    const currentGoals = getGoals() || { dailyStepsGoal: 10000 };
+    saveDailySteps({
+      date: today,
+      steps: 0,
+      distance: 0,
+      calories: 0,
+      activeMinutes: 0,
+      goal: currentGoals.dailyStepsGoal
+    });
+  };
 
   return (
-    <FitnessContext.Provider value={{ steps, distance, calories, activeMinutes, dailyGoal, userProfile, sensorAvailable, permissionStatus, updateProfile, updateGoals, addManualSteps }}>
+    <FitnessContext.Provider value={{ steps, distance, calories, activeMinutes, dailyGoal, userProfile, sensorAvailable, permissionStatus, updateProfile, updateGoals, addManualSteps, clearTodayData }}>
       {children}
     </FitnessContext.Provider>
   );
