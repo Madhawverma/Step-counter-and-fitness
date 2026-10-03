@@ -34,6 +34,16 @@ History + Daily Stats
 React Native UI
 ```
 
+### Local Device Data Flow (User's Phone)
+
+```text
+Phone Sensor
+     ↓
+React Native
+     ↓
+SQLite / Local Storage
+```
+
 ## 📂 Project Structure
 
 ```text
