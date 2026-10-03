@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, View, Text, StyleSheet, SafeAreaView, RefreshControl, ImageBackground, TouchableOpacity, Image } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, RefreshControl, ImageBackground, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { FitnessContext } from '../context/FitnessContext';
 import { getHistory } from '../storage/database';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
