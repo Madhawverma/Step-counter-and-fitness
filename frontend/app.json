@@ -31,6 +31,12 @@
     "plugins": [
       "expo-sqlite",
       "expo-status-bar"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "5cbbbef7-e98c-4eec-905f-1401fbe417b3"
+      }
+    },
+    "owner": "madhaw.18"
   }
 }
