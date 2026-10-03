@@ -21,7 +21,14 @@ export default function HomeScreen({ navigation }) {
   useEffect(() => { loadData(); }, []);
   const onRefresh = () => { setRefreshing(true); loadData(); };
 
-  const name = userProfile?.name || 'Alex';
+  const name = userProfile?.name || '';
+  const getGreeting = () => {
+    const h = new Date().getHours();
+    if (h < 12) return 'Good Morning';
+    if (h < 17) return 'Good Afternoon';
+    return 'Good Evening';
+  };
+  const greeting = getGreeting();
   const dateStr = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
   const progressPct = dailyGoal > 0 ? Math.min((steps / dailyGoal) * 100, 100).toFixed(0) : 0;
   
@@ -51,6 +58,11 @@ export default function HomeScreen({ navigation }) {
               <View style={styles.topRight}>
                 <View style={styles.avatar}><Ionicons name="person" size={20} color="#333" /></View>
               </View>
+            </View>
+
+            <View style={{paddingHorizontal: 20, marginBottom: 20}}>
+              <Text style={{fontSize: 24, fontWeight: 'bold', color: '#FFF'}}>{name ? `${greeting}, ${name}` : greeting} 👋</Text>
+              <Text style={{fontSize: 14, color: 'rgba(255,255,255,0.8)', marginTop: 5}}>{dateStr}</Text>
             </View>
 
             {/* Circular Dial */}
