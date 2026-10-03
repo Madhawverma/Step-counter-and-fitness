@@ -53,11 +53,16 @@ export const FitnessProvider = ({ children }) => {
       const perm = await requestPedometerPermission();
       setPermissionStatus(perm ? 'granted' : 'denied');
       if (perm) {
-        let initialSteps = steps;
+        const todayData = getDailySteps(today);
+        let initialSteps = todayData && !isNaN(todayData.steps) ? Number(todayData.steps) : 0;
+        
         pedometerSub = Pedometer.watchStepCount(result => {
           const currentProfile = getProfile() || { weight: 70, strideLength: 0.76 };
           const currentGoals = getGoals() || { dailyStepsGoal: 10000 };
-          const totalSteps = initialSteps + result.steps;
+          
+          const incr = result && result.steps ? Number(result.steps) : 0;
+          const totalSteps = initialSteps + incr;
+          
           const dist = calculateDistance(totalSteps, currentProfile.strideLength);
           const cals = calculateCalories(totalSteps, currentProfile.weight);
           const mins = Math.floor(totalSteps / 100);
@@ -79,12 +84,37 @@ export const FitnessProvider = ({ children }) => {
       }
     }
   };
+
+  // DEBUG: Manual step adder just in case physical sensor fails on their specific Android model
+  const addManualSteps = (amount = 50) => {
+    const currentProfile = getProfile() || { weight: 70, strideLength: 0.76 };
+    const currentGoals = getGoals() || { dailyStepsGoal: 10000 };
+    
+    const newSteps = steps + amount;
+    const dist = calculateDistance(newSteps, currentProfile.strideLength);
+    const cals = calculateCalories(newSteps, currentProfile.weight);
+    const mins = Math.floor(newSteps / 100);
+
+    setSteps(newSteps);
+    setDistance(dist);
+    setCalories(cals);
+    setActiveMinutes(mins);
+
+    saveDailySteps({
+      date: today,
+      steps: newSteps,
+      distance: dist,
+      calories: cals,
+      activeMinutes: mins,
+      goal: currentGoals.dailyStepsGoal
+    });
+  };
   
   const updateProfile = (newProfile) => { saveProfile(newProfile); setUserProfile(newProfile); };
   const updateGoals = (newGoals) => { saveGoals(newGoals); setDailyGoal(newGoals.dailyStepsGoal); };
 
   return (
-    <FitnessContext.Provider value={{ steps, distance, calories, activeMinutes, dailyGoal, userProfile, sensorAvailable, permissionStatus, updateProfile, updateGoals }}>
+    <FitnessContext.Provider value={{ steps, distance, calories, activeMinutes, dailyGoal, userProfile, sensorAvailable, permissionStatus, updateProfile, updateGoals, addManualSteps }}>
       {children}
     </FitnessContext.Provider>
   );

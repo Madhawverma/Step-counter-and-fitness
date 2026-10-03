@@ -41,6 +41,7 @@ export default function AppNavigator() {
             <Ionicons name="settings" size={size} color={color} />
           )
         }}
-      />\n    </Tab.Navigator>
+      />
+    </Tab.Navigator>
   );
 }

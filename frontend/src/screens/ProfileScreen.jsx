@@ -259,6 +259,26 @@ export default function ProfileScreen({ navigation }) {
             </View>
           </View>
 
+          {/* ABOUT DEVELOPER */}
+          <View style={[styles.card, { backgroundColor: theme.card, marginTop: 20 }]}>
+            <View style={styles.cardHeader}>
+              <View style={styles.cardHeaderLeft}>
+                <View style={[styles.iconBox, { backgroundColor: 'rgba(0,210,127,0.1)' }]}>
+                  <Ionicons name="information-circle" size={18} color="#00d27f" />
+                </View>
+                <Text style={[styles.cardTitle, { color: theme.text }]}>About Developer</Text>
+              </View>
+            </View>
+            <View style={{ alignItems: 'center', marginVertical: 10 }}>
+              <Ionicons name="code-slash" size={32} color={theme.primary} style={{ marginBottom: 10 }} />
+              <Text style={{ fontSize: 18, fontWeight: 'bold', color: theme.text }}>Madhaw Verma</Text>
+              <Text style={{ fontSize: 14, color: theme.textSub, textAlign: 'center', marginTop: 8, lineHeight: 20 }}>
+                FitStep was carefully crafted and developed by Madhaw Verma. 
+                Keep walking, stay healthy, and achieve your daily goals! 🚀
+              </Text>
+            </View>
+          </View>
+
           <TouchableOpacity style={[styles.saveBtn, { backgroundColor: theme.primaryBtn }]} onPress={handleSave}>
             <Ionicons name="save-outline" size={20} color="#FFF" style={{marginRight: 8}} />
             <Text style={styles.saveBtnText}>Save Profile</Text>
