@@ -98,13 +98,13 @@ export default function HomeScreen({ navigation }) {
             {/* Circular Dial */}
             <View style={styles.dialContainer}>
               <View style={styles.dialOuter}>
-                <TouchableOpacity activeOpacity={0.8} onPress={() => addManualSteps && addManualSteps(15)} style={styles.dialInner}>
+                <View style={styles.dialInner}>
                   <MaterialCommunityIcons name="walk" size={32} color="#FFF" />
                   <Text style={styles.dialSteps}>{steps.toLocaleString()}</Text>
                   <Text style={styles.dialLabel}>STEPS</Text>
                   <Text style={styles.dialGoal}>Goal: {dailyGoal.toLocaleString()}</Text>
                   <View style={styles.dialPill}><Text style={styles.dialPillText}>{progressPct}%</Text></View>
-                </TouchableOpacity>
+                </View>
               </View>
             </View>
 
