@@ -5,7 +5,7 @@ import HomeScreen from '../screens/HomeScreen';
 import ActivityScreen from '../screens/ActivityScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import GoalsScreen from '../screens/GoalsScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import ProfileScreen from '../screens/ProfileScreen';\nimport SettingsScreen from '../screens/SettingsScreen';
 import colors from '../constants/colors';
 
 const Tab = createBottomTabNavigator();
@@ -32,6 +32,15 @@ export default function AppNavigator() {
       <Tab.Screen name="History" component={HistoryScreen} />
       <Tab.Screen name="Goals" component={GoalsScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
-    </Tab.Navigator>
+    
+      <Tab.Screen 
+        name="Settings" 
+        component={SettingsScreen} 
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="settings" size={size} color={color} />
+          )
+        }}
+      />\n    </Tab.Navigator>
   );
 }
