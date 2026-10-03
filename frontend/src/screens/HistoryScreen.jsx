@@ -3,8 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, useColorScheme, F
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { FitnessContext } from '../context/FitnessContext';
-import { getHistory, saveDailySteps } from '../storage/database';
-import { fetchStepsHistory, getDeviceId } from '../services/api';
+import { getHistory } from '../storage/database';
 
 export default function HistoryScreen({ navigation }) {
   const { steps: liveSteps, distance: liveDist, calories: liveCal, activeMinutes: liveMins, dailyGoal } = useContext(FitnessContext);
@@ -19,18 +18,8 @@ export default function HistoryScreen({ navigation }) {
     loadData();
   }, [liveSteps]); // Reload when live steps change to keep today updated
 
-  const loadData = async () => {
-    let dbHistory = getHistory() || [];
-    
-    try {
-        const deviceId = await getDeviceId();
-        const apiResponse = await fetchStepsHistory(deviceId);
-        if (apiResponse?.success && apiResponse?.data) {
-            dbHistory = apiResponse.data;
-        }
-    } catch (e) {
-        console.log("Failed to fetch history from API, falling back to local storage.", e.message);
-    }
+  const loadData = () => {
+    const dbHistory = getHistory() || [];
     
     // Merge live today data if needed
     const todayStr = new Date().toISOString().split('T')[0];
