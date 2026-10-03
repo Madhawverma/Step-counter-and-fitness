@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, View, Text, StyleSheet, RefreshControl, ImageBackground, TouchableOpacity, Image } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, RefreshControl, ImageBackground, TouchableOpacity, Image, Modal, TextInput, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FitnessContext } from '../context/FitnessContext';
 import { getHistory } from '../storage/database';
@@ -10,6 +10,8 @@ export default function HomeScreen({ navigation }) {
   const { steps, distance, calories, activeMinutes, dailyGoal, userProfile, permissionStatus, requestSensorPermissions } = useContext(FitnessContext);
   const [history, setHistory] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [goalModalVisible, setGoalModalVisible] = useState(false);
+  const [tempGoal, setTempGoal] = useState("");
 
   const loadData = () => {
     setHistory(getHistory() || []);
@@ -70,7 +72,31 @@ export default function HomeScreen({ navigation }) {
                 </View>
               </View>
             </View>
-          </SafeAreaView>
+      
+      {/* Goal Edit Modal */}
+      <Modal visible={goalModalVisible} transparent animationType="fade">
+        <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{width: '80%', padding: 20, borderRadius: 20, backgroundColor: theme.card}}>
+            <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom: 15, color: theme.text}}>Edit Daily Goal</Text>
+            <TextInput
+              style={{height: 50, borderRadius: 12, paddingHorizontal: 15, fontSize: 16, marginBottom: 20, backgroundColor: theme.bg, color: theme.text}}
+              value={tempGoal}
+              onChangeText={setTempGoal}
+              keyboardType="numeric"
+            />
+            <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+              <TouchableOpacity style={{padding: 10, marginRight: 10}} onPress={() => setGoalModalVisible(false)}>
+                <Text style={{color: '#888'}}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={{paddingHorizontal: 20, paddingVertical: 10, borderRadius: 12, backgroundColor: theme.primary}} onPress={saveGoal}>
+                <Text style={{color: '#FFF', fontWeight: 'bold'}}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+  
+    </SafeAreaView>
         </ImageBackground>
 
         <View style={styles.content}>

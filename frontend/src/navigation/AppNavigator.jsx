@@ -4,7 +4,6 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeScreen from '../screens/HomeScreen';
 import ActivityScreen from '../screens/ActivityScreen';
 import HistoryScreen from '../screens/HistoryScreen';
-import GoalsScreen from '../screens/GoalsScreen';
 import ProfileScreen from '../screens/ProfileScreen';\nimport SettingsScreen from '../screens/SettingsScreen';
 import colors from '../constants/colors';
 
@@ -30,7 +29,7 @@ export default function AppNavigator() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Activity" component={ActivityScreen} />
       <Tab.Screen name="History" component={HistoryScreen} />
-      <Tab.Screen name="Goals" component={GoalsScreen} />
+      
       <Tab.Screen name="Profile" component={ProfileScreen} />
     
       <Tab.Screen 
